@@ -7,7 +7,6 @@ package Info;
  *
  */
 
-//TESTTESTETTETSETSTEST
 public class Orderer {
     private String name, address, phoneNumber;
 

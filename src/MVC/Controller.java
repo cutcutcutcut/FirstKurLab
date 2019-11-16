@@ -8,4 +8,6 @@ package MVC;
  *
  */
 public class Controller {
+
+    private static final String[] COMMANDS = {};
 }

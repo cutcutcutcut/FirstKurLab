@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Alexey B, Nikita K
- * @version 1.0
+ *  * @version 1.0
  *
  * This class is a part of MVC, that contains treatment of info classes
  */
@@ -67,8 +67,6 @@ public class Model {
     }
 
     /**
-     *
-     *
      * @param index index of object that user wants to change
      * @param forChange new object that place on place by index
      * @throws IndexOutOfBoundsException if index that enter user is negative or more than count object in container
