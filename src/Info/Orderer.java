@@ -3,11 +3,11 @@ package Info;
 /**
  * @author Alexey B, Nikita K
  * @version 1.0
- *
  * This is one of the info classes, that contains information about orderer
  *
  */
 
+//TESTTESTETTETSETSTEST
 public class Orderer {
     private String name, address, phoneNumber;
 
