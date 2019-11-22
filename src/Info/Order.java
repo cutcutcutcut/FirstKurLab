@@ -12,19 +12,19 @@ public class Order {
     private int num;
     private double orderSum;
     private String date;
-    private Orderer orderer;
+    private Costumer costumer;
 
     /**
      * Constructor that takes all field and create object
      * @param num
-     * @param orderer
+     * @param costumer
      * @param date
      * @param orderSum
      */
 
-    public Order(int num, Orderer orderer, String date, double orderSum) {
+    public Order(int num, Costumer costumer, String date, double orderSum) {
         this.num = num;
-        this.orderer = orderer;
+        this.costumer = costumer;
         this.date = date;
         this.orderSum = orderSum;
     }
@@ -53,18 +53,18 @@ public class Order {
      * @return object of orderer class
      */
 
-    public Orderer getOrderer() {
-        return orderer;
+    public Costumer getCostumer() {
+        return costumer;
     }
 
     /**
      *
      * Setter for field orderer
-     * @param orderer orderer
+     * @param costumer orderer
      */
 
-    public void setOrderer(Orderer orderer) {
-        this.orderer = orderer;
+    public void setCostumer(Costumer costumer) {
+        this.costumer = costumer;
     }
 
     /**
@@ -111,6 +111,6 @@ public class Order {
      */
     @Override
     public String toString() {
-        return "\nOrder:\nNumber - " + num + "\n\t" + orderer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
+        return "\nOrder:\nNumber - " + num + "\n\t" + costumer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
     }
 }

@@ -7,7 +7,7 @@ package Info;
  *
  */
 
-public class Orderer {
+public class Costumer {
     private String name, address, phoneNumber;
 
     /**
@@ -16,7 +16,7 @@ public class Orderer {
      * @param phoneNumber
      * @param address
      */
-    public Orderer(String name, String phoneNumber, String address) {
+    public Costumer(String name, String phoneNumber, String address) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
