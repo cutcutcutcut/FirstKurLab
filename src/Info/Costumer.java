@@ -1,13 +1,15 @@
 package Info;
 
+import java.util.List;
+
 /**
- * @author Alexey B, Nikita K
+ * @author Alexey B
  * @version 1.0
  * This is one of the info classes, that contains information about orderer
  *
  */
 
-public class Costumer {
+public class Costumer implements Info {
     private String name, address, phoneNumber;
 
     /**
@@ -86,5 +88,16 @@ public class Costumer {
     @Override
     public String toString() {
         return "Orderer:\n\tName - " + name + "\n\tAddress - " + address + "\n\tPhone number - " + phoneNumber;
+    }
+
+    public void add(List list) {
+        list.add(this);
+    }
+
+
+    public void set(List list, int index) throws ClassNotFoundException {
+        if (list.get(index).getClass() != Costumer.class) throw new ClassNotFoundException();
+        if (index < 0 || index > list.size()) throw new IndexOutOfBoundsException("Incorrect index");
+        list.set(index, this);
     }
 }

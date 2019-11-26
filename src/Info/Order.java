@@ -1,14 +1,16 @@
 package Info;
 
+import java.util.List;
+
 /**
- * @author Alexey B, Nikita K
+ * @author Alexey B
  * @version 1.0
  *
  * This is one of the info classes, that contains information about order
  *
  */
 
-public class Order {
+public class Order implements Info{
     private int num;
     private double orderSum;
     private String date;
@@ -112,5 +114,15 @@ public class Order {
     @Override
     public String toString() {
         return "\nOrder:\nNumber - " + num + "\n\t" + costumer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
+    }
+
+    public void add(List list) {
+        list.add(this);
+    }
+
+    public void set(List list, int index) throws ClassNotFoundException {
+        if (list.get(index).getClass() != Order.class) throw new ClassNotFoundException();
+        if (index < 0 || index > list.size()) throw new IndexOutOfBoundsException("Incorrect index");
+        list.set(index, this);
     }
 }
