@@ -9,8 +9,9 @@ import java.util.List;
  *
  */
 
-public class Costumer implements Info {
+public class Customer implements Info{
     private String name, address, phoneNumber;
+    private int numOrder;
 
     /**
      * Constructor that takes all field and create object
@@ -18,10 +19,19 @@ public class Costumer implements Info {
      * @param phoneNumber
      * @param address
      */
-    public Costumer(String name, String phoneNumber, String address) {
+    public Customer(String name, String phoneNumber, String address, int numOrder) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.numOrder = numOrder;
+    }
+
+    public int getNumOrder() {
+        return numOrder;
+    }
+
+    public void setNumOrder(int numOrder) {
+        this.numOrder = numOrder;
     }
 
     /**
@@ -90,14 +100,4 @@ public class Costumer implements Info {
         return "Orderer:\n\tName - " + name + "\n\tAddress - " + address + "\n\tPhone number - " + phoneNumber;
     }
 
-    public void add(List list) {
-        list.add(this);
-    }
-
-
-    public void set(List list, int index) throws ClassNotFoundException {
-        if (list.get(index).getClass() != Costumer.class) throw new ClassNotFoundException();
-        if (index < 0 || index > list.size()) throw new IndexOutOfBoundsException("Incorrect index");
-        list.set(index, this);
-    }
 }

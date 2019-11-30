@@ -10,29 +10,31 @@ import java.util.List;
  *
  */
 
-public class Order implements Info{
+public class Order implements Info {
     private int num;
     private double orderSum;
     private String date;
-    private Costumer costumer;
+    private Customer customer;
 
     /**
      * Constructor that takes all field and create object
+     *
      * @param num
-     * @param costumer
+     * @param customer
      * @param date
      * @param orderSum
      */
 
-    public Order(int num, Costumer costumer, String date, double orderSum) {
+    public Order(int num, Customer customer, String date, double orderSum) {
         this.num = num;
-        this.costumer = costumer;
+        this.customer = customer;
         this.date = date;
         this.orderSum = orderSum;
     }
 
     /**
      * Getter field date
+     *
      * @return string date of an order
      */
 
@@ -41,8 +43,8 @@ public class Order implements Info{
     }
 
     /**
-     *
      * Setter for field date
+     *
      * @param date string
      */
 
@@ -52,25 +54,27 @@ public class Order implements Info{
 
     /**
      * Getter field orderer
+     *
      * @return object of orderer class
      */
 
-    public Costumer getCostumer() {
-        return costumer;
+    public Customer getCustomer() {
+        return customer;
     }
 
     /**
-     *
      * Setter for field orderer
-     * @param costumer orderer
+     *
+     * @param customer orderer
      */
 
-    public void setCostumer(Costumer costumer) {
-        this.costumer = costumer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     /**
      * Getter field sum of an order
+     *
      * @return double value sum
      */
 
@@ -79,8 +83,8 @@ public class Order implements Info{
     }
 
     /**
-     *
      * Setter for field orderSum
+     *
      * @param orderSum double
      */
 
@@ -90,6 +94,7 @@ public class Order implements Info{
 
     /**
      * Getter field number of an order
+     *
      * @return int value num
      */
 
@@ -98,8 +103,8 @@ public class Order implements Info{
     }
 
     /**
-     *
      * Setter for field num of an order
+     *
      * @param num int
      */
 
@@ -109,20 +114,12 @@ public class Order implements Info{
 
     /**
      * Method realizes the conversion object in string
+     *
      * @return string
      */
     @Override
     public String toString() {
-        return "\nOrder:\nNumber - " + num + "\n\t" + costumer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
+        return "\nOrder:\nNumber - " + num + "\n\t" + customer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
     }
 
-    public void add(List list) {
-        list.add(this);
-    }
-
-    public void set(List list, int index) throws ClassNotFoundException {
-        if (list.get(index).getClass() != Order.class) throw new ClassNotFoundException();
-        if (index < 0 || index > list.size()) throw new IndexOutOfBoundsException("Incorrect index");
-        list.set(index, this);
-    }
 }

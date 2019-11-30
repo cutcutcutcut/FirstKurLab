@@ -1,5 +1,8 @@
 package MVC;
 
+import SaveService.FileView;
+import SaveService.SavingAndDownload;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -14,22 +17,31 @@ import java.io.StreamTokenizer;
  */
 public class Controller {
 
-    private static final String[] COMMANDS = {
-            "get", "setOrder", "setCostumer", "addOrder",
-            "addCostumer", "delete","clear", "show", "exit"
-    };
+    private static FileView fileView = new FileView(CustomerModel.getRuntime(), OrderModel.getRuntime());
+
+    private enum commands {
+
+        get("get"), setOrder("setOrder"), setCustomer("setCustomer"),addOrder("addOrder"),
+        addCostumer("addCostumer"), delete("delete"), clear("clear"), show("show"), exit("exit");
+
+        private String title;
+        commands(String title) {
+            this.title = title;
+        }
+
+    }
 
     private static void getCommandList() {
         View.outInfo("\nCommands:\n");
-        View.outInfo(COMMANDS[0] + " - returns information from directory by index \n");
-        View.outInfo(COMMANDS[1] + " - change an object of Order from directory by index \n");
-        View.outInfo(COMMANDS[2] + " - change an object of Costumer from directory by index \n");
-        View.outInfo(COMMANDS[3] + " - add an object of Order in directory\n");
-        View.outInfo(COMMANDS[4] + " - add an object of Costumer in directory\n");
-        View.outInfo(COMMANDS[5] + " - delete an object from directory by index\n");
-        View.outInfo(COMMANDS[6] + " - delete all elements from directory\n");
-        View.outInfo(COMMANDS[7] + " - display contents of the directory\n");
-        View.outInfo(COMMANDS[8] + " - End current session\n");
+        View.outInfo(commands.get + " - returns information from directory by index \n");
+        View.outInfo(commands.setOrder + " - change an object of Order from directory by index \n");
+        View.outInfo(commands.setCustomer + " - change an object of Costumer from directory by index \n");
+        View.outInfo(commands.addOrder + " - add an object of Order in directory\n");
+        View.outInfo(commands.addCostumer + " - add an object of Costumer in directory\n");
+        View.outInfo(commands.delete + " - delete an object from directory by index\n");
+        View.outInfo(commands.clear + " - delete all elements from directory\n");
+        View.outInfo(commands.show + " - display contents of the directory\n");
+        View.outInfo(commands.exit + " - End current session\n");
 
     }
 
@@ -50,16 +62,16 @@ public class Controller {
         if (currentCommand != null) {
             switch (currentCommand) {
                 case "exit": {
-                    Model.updateDataBase();
+                    SavingAndDownload.save(fileView);
                     View.outInfo("Program successfully completed.");
                     return false;
                 }
                 case "show": {
-                    Model.showInfo();
+                    View.outInfo(fileView.getString());
                     break;
                 }
                 case "clear": {
-                    Model.clearInfo();
+                    fileView.clear();
                     break;
                 }
                 case "get": {
@@ -81,7 +93,7 @@ public class Controller {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
         int index = (int)tokenizer.nval;
-        Model.getInfo(index);
+        fileView.getInfo(index);
     }
 
 
