@@ -21,7 +21,7 @@ public class View {
     }
 
     static void outInfo(String message) {
-        System.out.println("\n" + message + "\n");
+        System.out.print(message + '\n');
     }
 
 }

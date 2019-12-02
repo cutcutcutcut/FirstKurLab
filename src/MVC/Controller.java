@@ -33,22 +33,22 @@ public class Controller {
 
     private static void getCommandList() {
         View.outInfo("\nCommands:\n");
-        View.outInfo(commands.get + " - returns information from directory by index \n");
-        View.outInfo(commands.setOrder + " - change an object of Order from directory by index \n");
-        View.outInfo(commands.setCustomer + " - change an object of Costumer from directory by index \n");
-        View.outInfo(commands.addOrder + " - add an object of Order in directory\n");
-        View.outInfo(commands.addCostumer + " - add an object of Costumer in directory\n");
-        View.outInfo(commands.delete + " - delete an object from directory by index\n");
-        View.outInfo(commands.clear + " - delete all elements from directory\n");
-        View.outInfo(commands.show + " - display contents of the directory\n");
-        View.outInfo(commands.exit + " - End current session\n");
+        View.outInfo(commands.get + " - returns information from directory by index"); //+
+        View.outInfo(commands.setOrder + " - change an object of Order from directory by index");
+        View.outInfo(commands.setCustomer + " - change an object of Costumer from directory by index");
+        View.outInfo(commands.addOrder + " - add an object of Order in directory");
+        View.outInfo(commands.addCostumer + " - add an object of Costumer in directory");
+        View.outInfo(commands.delete + " - delete an object from directory by index"); //+
+        View.outInfo(commands.clear + " - delete all elements from directory"); //+
+        View.outInfo(commands.show + " - display contents of the directory"); //+
+        View.outInfo(commands.exit + " - End current session");  //+
 
     }
 
 
-    static void start() throws IOException {
-        View.outInfo("\nSales department : ");
-        View.outInfo("Order(number, costumer, date, cost), Costumer(name, phone number, address)\n");
+   public static void start() throws IOException {
+        View.outInfo("Sales department : ");
+        View.outInfo("Order(number, costumer, date, cost), Costumer(name, phone number, address)");
         getCommandList();
         Reader reader = new InputStreamReader(System.in);
         while (inputCommand(reader));
@@ -78,6 +78,10 @@ public class Controller {
                     getInfo(in);
                     break;
                 }
+                case "delete": {
+                    deleteInfo(in);
+                    break;
+                }
 
                 default:
                     View.outInfo("There is not this command in command list. Try again..");
@@ -92,10 +96,30 @@ public class Controller {
     private static void getInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
-        int index = (int)tokenizer.nval;
-        fileView.getInfo(index);
+        if (tokenizer.sval != null) {
+            View.outInfo("Incorrect input");
+        }
+        else {
+            int index = (int) tokenizer.nval;
+            fileView.getInfo(index);
+        }
     }
 
+    private static void deleteInfo(Reader in) throws IOException {
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        tokenizer.nextToken();
+        if (tokenizer.sval != null) {
+            View.outInfo("Incorrect input");
+        }
+        else {
+            int index = (int) tokenizer.nval;
+            fileView.deleteInfo(index);
+        }
+    }
+
+    private static void addOrder(Reader in) throws IOException {
+
+    }
 
 
 }

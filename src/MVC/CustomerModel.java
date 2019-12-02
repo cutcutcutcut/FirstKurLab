@@ -12,21 +12,21 @@ public class CustomerModel {
     public static List<Customer> getRuntime() {
         return runtime;
     }
+//
+//    public CustomerModel(List<Info> info) throws IOException, ClassNotFoundException {
+//        for (int i = 0; i < info.size(); i++)
+//            if (info.get(i) instanceof Customer) runtime.add((Customer)info.get(i));
+//    }
 
-    protected CustomerModel(List<Info> info) throws IOException, ClassNotFoundException {
-        for (int i = 0; i < info.size(); i++)
-            if (info.get(i) instanceof Customer) runtime.add((Customer)info.get(i));
-    }
-
-    protected void add(Customer forAdd) {
+    public void add(Customer forAdd) {
         runtime.add(forAdd);
     }
 
-    protected void set(Customer forChange, int index) {
+    public void set(Customer forChange, int index) {
         runtime.set(index, forChange);
     }
 
-    protected void remove(int index) {
+    public void remove(int index) {
         runtime.remove(index);
     }
 }

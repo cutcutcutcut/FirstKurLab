@@ -40,5 +40,23 @@ public class FileView {
         return list.get(index);
     }
 
+    public void deleteInfo(int index) {
+        list.remove(index);
+    }
 
+    public void addOrder(Order order) {
+        list.add(order);
+    }
+
+    public void addCustomer(Customer customer) {
+        list.add(customer);
+    }
+
+    public void setOrder(int index, Order order) {
+        list.set(index, order) ;
+    }
+
+    public void setCustomer(int index, Customer customer) {
+        list.set(index, customer);
+    }
 }
