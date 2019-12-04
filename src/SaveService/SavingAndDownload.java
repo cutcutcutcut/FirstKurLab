@@ -1,10 +1,6 @@
 package SaveService;
 
-import Info.Info;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SavingAndDownload {
 
@@ -16,11 +12,11 @@ public class SavingAndDownload {
         objectOutputStream.close();
     }
 
-    public static List<Info> download() throws IOException, ClassNotFoundException {
-        List<Info> info = new ArrayList<Info>();
+    public static FileView download() throws IOException, ClassNotFoundException {
+        FileView info = new FileView();
         if (DATA_BASE.length() != 0) {
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(DATA_BASE));
-            info = (ArrayList<Info>) objectInputStream.readObject();
+            info = (FileView) objectInputStream.readObject();
             objectInputStream.close();
         }
         else return null;

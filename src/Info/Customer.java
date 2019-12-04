@@ -1,6 +1,6 @@
 package Info;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Alexey B
@@ -9,9 +9,10 @@ import java.util.List;
  *
  */
 
-public class Customer implements Info{
+public class Customer {
     private String name, address, phoneNumber;
     private int numOrder;
+    UUID idCustomer;
 
     /**
      * Constructor that takes all field and create object
@@ -24,6 +25,7 @@ public class Customer implements Info{
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.numOrder = numOrder;
+        idCustomer = UUID.randomUUID();
     }
 
     public int getNumOrder() {

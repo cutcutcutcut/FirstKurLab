@@ -1,8 +1,8 @@
 package MVC;
 
 
-import Info.Info;
 import Info.Order;
+import SaveService.FileView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +15,25 @@ public class OrderModel {
 
     private static List<Order> runtime = new ArrayList<Order>();
 
-    public OrderModel(List<Info> info) {
-        for (int i = 0; i < info.size(); i++)
-            if (info.get(i) instanceof Order) runtime.add((Order)info.get(i));
-
+    public OrderModel(FileView fileView) {
+        runtime = fileView.getOrderList();
     }
 
-    protected void add(Order forAdd) {
+    //
+
+    public void add(Order forAdd) {
         runtime.add(forAdd);
     }
 
-    protected void set(Order forChange, int index) {
+    public void set(Order forChange, int index) {
         runtime.set(index, forChange);
     }
 
-    protected void remove(int index) {
+    public void remove(int index) {
         runtime.remove(index);
+    }
+
+    public void clear() {
+        runtime.clear();
     }
 }

@@ -17,12 +17,16 @@ import java.io.StreamTokenizer;
  */
 public class Controller {
 
-    private static FileView fileView = new FileView(CustomerModel.getRuntime(), OrderModel.getRuntime());
+   private FileView fileView = new FileView(SavingAndDownload.download());
+   private View view = new View();
+
+    public Controller() throws IOException, ClassNotFoundException {
+    }
 
     private enum commands {
 
-        get("get"), setOrder("setOrder"), setCustomer("setCustomer"),addOrder("addOrder"),
-        addCostumer("addCostumer"), delete("delete"), clear("clear"), show("show"), exit("exit");
+        getOrder("getOrderInfo"), getCustomer("getCosumerInfo"), setOrder("setOrder"), setCustomer("setCustomer"),addOrder("addOrder"),
+        addCostumer("addCostumer"), deleteOrder("deleteOrder"), deleteCustomer("deleteCustomer"), clear("clear"), show("show"), exit("exit");
 
         private String title;
         commands(String title) {
@@ -31,31 +35,33 @@ public class Controller {
 
     }
 
-    private static void getCommandList() {
-        View.outInfo("\nCommands:\n");
-        View.outInfo(commands.get + " - returns information from directory by index"); //+
-        View.outInfo(commands.setOrder + " - change an object of Order from directory by index");
-        View.outInfo(commands.setCustomer + " - change an object of Costumer from directory by index");
-        View.outInfo(commands.addOrder + " - add an object of Order in directory");
-        View.outInfo(commands.addCostumer + " - add an object of Costumer in directory");
-        View.outInfo(commands.delete + " - delete an object from directory by index"); //+
-        View.outInfo(commands.clear + " - delete all elements from directory"); //+
-        View.outInfo(commands.show + " - display contents of the directory"); //+
-        View.outInfo(commands.exit + " - End current session");  //+
+    private void getCommandList() {
+        view.outInfo("\nCommands:\n");
+        view.outInfo(commands.getOrder + " - returns Order information from directory by id");
+        view.outInfo(commands.getCustomer + " - returns Customer information from directory by id");
+        view.outInfo(commands.setOrder + " - change an object of Order from directory by id");
+        view.outInfo(commands.setCustomer + " - change an object of Costumer from directory by id");
+        view.outInfo(commands.addOrder + " - add an object of Order in directory");
+        view.outInfo(commands.addCostumer + " - add an object of Costumer in directory");
+        view.outInfo(commands.deleteOrder + " - delete an Order object from directory by id");
+        view.outInfo(commands.deleteCustomer + " - delete an Customer object from directory by id");
+        view.outInfo(commands.clear + " - delete all elements from directory"); //+
+        view.outInfo(commands.show + " - display contents of the directory"); //+
+        view.outInfo(commands.exit + " - End current session");  //+
 
     }
 
 
-   public static void start() throws IOException {
-        View.outInfo("Sales department : ");
-        View.outInfo("Order(number, costumer, date, cost), Costumer(name, phone number, address)");
+   public void start() throws IOException {
+        view.outInfo("Sales department : ");
+        view.outInfo("Order(number, costumer, date, cost), Costumer(name, phone number, address)");
         getCommandList();
         Reader reader = new InputStreamReader(System.in);
         while (inputCommand(reader));
 
     }
 
-    private static boolean inputCommand(Reader in) throws IOException {
+    private boolean inputCommand(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
         String currentCommand = tokenizer.sval;
@@ -63,61 +69,97 @@ public class Controller {
             switch (currentCommand) {
                 case "exit": {
                     SavingAndDownload.save(fileView);
-                    View.outInfo("Program successfully completed.");
+                    view.outInfo("Program successfully completed.");
                     return false;
                 }
                 case "show": {
-                    View.outInfo(fileView.getString());
+                    fileView.getOrderList().toString();
+                    view.outInfo("");
+                    fileView.getCustomerList().toString();
                     break;
                 }
                 case "clear": {
-                    fileView.clear();
+                    fileView.getCustomerList().clear();
+                    fileView.getOrderList().clear();
                     break;
                 }
-                case "get": {
-                    getInfo(in);
+                case "getOrder": {
+                    getOrderInfo(in);
                     break;
                 }
-                case "delete": {
-                    deleteInfo(in);
+                case "deleteOrder": {
+                    deleteOrderInfo(in);
+                    break;
+                }
+                case "getCustomer": {
+                    getCustomerInfo(in);
+                    break;
+                }
+                case "deleteCustomer": {
+                    deleteCustomerInfo(in);
                     break;
                 }
 
                 default:
-                    View.outInfo("There is not this command in command list. Try again..");
+                    view.outInfo("There is not this command in command list. Try again..");
             }
         }
         else {
-            View.outInfo("Error. Empty input, try again..");
+            view.outInfo("Error. Empty input, try again..");
         }
         return true;
     }
 
-    private static void getInfo(Reader in) throws IOException {
+    private void getOrderInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
         if (tokenizer.sval != null) {
-            View.outInfo("Incorrect input");
+            view.outInfo("Incorrect input");
         }
         else {
             int index = (int) tokenizer.nval;
-            fileView.getInfo(index);
+            fileView.getOrderList().get(index); //needs id
         }
     }
 
-    private static void deleteInfo(Reader in) throws IOException {
+    private void getCustomerInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
         if (tokenizer.sval != null) {
-            View.outInfo("Incorrect input");
+            view.outInfo("Incorrect input");
         }
         else {
             int index = (int) tokenizer.nval;
-            fileView.deleteInfo(index);
+            fileView.getCustomerList().get(index); //needs id
         }
     }
 
-    private static void addOrder(Reader in) throws IOException {
+    private void deleteOrderInfo(Reader in) throws IOException {
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        tokenizer.nextToken();
+        if (tokenizer.sval != null) {
+            view.outInfo("Incorrect input");
+        }
+        else {
+            int index = (int) tokenizer.nval;
+            fileView.getOrderList().remove(index); //needs id
+        }
+    }
+
+
+    private void deleteCustomerInfo(Reader in) throws IOException {
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        tokenizer.nextToken();
+        if (tokenizer.sval != null) {
+            view.outInfo("Incorrect input");
+        }
+        else {
+            int index = (int) tokenizer.nval;
+            fileView.getCustomerList().remove(index); //needs id
+        }
+    }
+
+    private void addOrder(Reader in) throws IOException {
 
     }
 

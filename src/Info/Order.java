@@ -1,6 +1,6 @@
 package Info;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Alexey B
@@ -10,12 +10,12 @@ import java.util.List;
  *
  */
 
-public class Order implements Info {
+public class Order {
     private int num;
     private double orderSum;
     private String date;
     private Customer customer;
-
+    UUID idOrder;
     /**
      * Constructor that takes all field and create object
      *
@@ -26,9 +26,10 @@ public class Order implements Info {
      */
 
     public Order(int num, Customer customer, String date, double orderSum) {
+        idOrder = UUID.randomUUID();
         this.num = num;
         this.customer = customer;
-        this.date = date;
+        this.date = date; //needs Date date
         this.orderSum = orderSum;
     }
 

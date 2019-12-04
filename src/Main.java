@@ -1,18 +1,19 @@
 import Info.Customer;
 import MVC.Controller;
 import MVC.CustomerModel;
+import MVC.View;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
+        View view = new View();
         try {
-            Customer customer = new Customer("Alex", "13371448", "Moskovskaya street, 58", 1);
-            CustomerModel customerModel = new CustomerModel();
-            customerModel.add(customer);
-            Controller.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+                Controller controller = new Controller();
+                controller.start();
+
+        } catch (IOException | ClassNotFoundException e) {
+            view.outInfo("Incorrect data base!");
         }
     }
 }

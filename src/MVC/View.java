@@ -16,11 +16,11 @@ public class View {
      * @param obj
      */
 
-    static void viewer(Object obj) {
+    public void viewer(Object obj) {
         System.out.println(obj.toString());
     }
 
-    static void outInfo(String message) {
+    public void outInfo(String message) {
         System.out.print(message + '\n');
     }
 
