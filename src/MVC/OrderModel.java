@@ -4,16 +4,19 @@ package MVC;
 import Info.Order;
 import SaveService.FileView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderModel {
+public class OrderModel implements Serializable {
 
-    public static List<Order> getRuntime() {
+    public List<Order> getRuntime() {
         return runtime;
     }
 
     private static List<Order> runtime = new ArrayList<Order>();
+
+    public OrderModel() {}
 
     public OrderModel(FileView fileView) {
         runtime = fileView.getOrderList();

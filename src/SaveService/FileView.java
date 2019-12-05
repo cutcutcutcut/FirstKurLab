@@ -3,10 +3,11 @@ package SaveService;
 import Info.Customer;
 import Info.Order;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileView {
+public class FileView implements Serializable {
     private List<Customer> customerList = new ArrayList<Customer>();
     private List<Order> orderList = new ArrayList<Order>();
 

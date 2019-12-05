@@ -3,17 +3,20 @@ package MVC;
 import Info.Customer;
 import SaveService.FileView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerModel {
+public class CustomerModel implements Serializable {
     private static List<Customer> runtime = new ArrayList<Customer>();
+
+    public CustomerModel() {}
 
     public CustomerModel(FileView fileView) {
         runtime = fileView.getCustomerList();
     }
 
-    public static List<Customer> getRuntime() {
+    public List<Customer> getRuntime() {
         return runtime;
     }
 

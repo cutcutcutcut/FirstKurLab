@@ -73,9 +73,9 @@ public class Controller {
                     return false;
                 }
                 case "show": {
-                    fileView.getOrderList().toString();
+                    view.outInfo(fileView.getOrderList().toString());
                     view.outInfo("");
-                    fileView.getCustomerList().toString();
+                    view.outInfo(fileView.getCustomerList().toString());
                     break;
                 }
                 case "clear": {
@@ -118,7 +118,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            fileView.getOrderList().get(index); //needs id
+            view.viewer(fileView.getOrderList().get(index+1)); //needs id
         }
     }
 

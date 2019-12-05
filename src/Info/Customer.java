@@ -1,5 +1,6 @@
 package Info;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -9,7 +10,7 @@ import java.util.UUID;
  *
  */
 
-public class Customer {
+public class Customer implements Serializable {
     private String name, address, phoneNumber;
     private int numOrder;
     UUID idCustomer;
@@ -26,6 +27,10 @@ public class Customer {
         this.address = address;
         this.numOrder = numOrder;
         idCustomer = UUID.randomUUID();
+    }
+
+    public UUID getIdCustomer() {
+        return idCustomer;
     }
 
     public int getNumOrder() {

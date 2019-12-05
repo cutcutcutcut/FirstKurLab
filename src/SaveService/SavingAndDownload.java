@@ -2,9 +2,9 @@ package SaveService;
 
 import java.io.*;
 
-public class SavingAndDownload {
+public class SavingAndDownload implements Serializable {
 
-    private static final File DATA_BASE = new File("C://Users", "database.txt");
+    private static final File DATA_BASE = new File("C://Users//bekht//Desktop", "database.txt");
 
     public static void save(FileView fileView) throws IOException {
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(DATA_BASE));

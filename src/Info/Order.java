@@ -1,5 +1,8 @@
 package Info;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -10,12 +13,12 @@ import java.util.UUID;
  *
  */
 
-public class Order {
+public class Order implements Serializable {
     private int num;
     private double orderSum;
-    private String date;
+    private Calendar date;
     private Customer customer;
-    UUID idOrder;
+    private UUID idOrder;
     /**
      * Constructor that takes all field and create object
      *
@@ -25,12 +28,16 @@ public class Order {
      * @param orderSum
      */
 
-    public Order(int num, Customer customer, String date, double orderSum) {
+    public Order(int num, Customer customer, Calendar date, double orderSum) {
         idOrder = UUID.randomUUID();
         this.num = num;
         this.customer = customer;
-        this.date = date; //needs Date date
+        this.date = date;
         this.orderSum = orderSum;
+    }
+
+    public UUID getIdOrder() {
+        return idOrder;
     }
 
     /**
@@ -39,7 +46,7 @@ public class Order {
      * @return string date of an order
      */
 
-    public String getDate() {
+    public Calendar getDate() {
         return date;
     }
 
@@ -49,7 +56,7 @@ public class Order {
      * @param date string
      */
 
-    public void setDate(String date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
