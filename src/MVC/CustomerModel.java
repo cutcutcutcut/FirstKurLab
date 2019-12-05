@@ -35,4 +35,13 @@ public class CustomerModel implements Serializable {
     public void clear() {
         runtime.clear();
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        for (Customer c: runtime) {
+            result += c.toString();
+        }
+        return result;
+    }
 }

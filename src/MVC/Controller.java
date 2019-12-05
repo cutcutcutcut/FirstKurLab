@@ -118,7 +118,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            view.viewer(fileView.getOrderList().get(index+1)); //needs id
+            view.viewer(fileView.getOrderList().get(index-1)); //needs id
         }
     }
 

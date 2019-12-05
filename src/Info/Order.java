@@ -127,7 +127,7 @@ public class Order implements Serializable {
      */
     @Override
     public String toString() {
-        return "\nOrder:\nNumber - " + num + "\n\t" + customer.toString() + "\nDate - " + date + "\nTotal price - " + orderSum + "\n";
+        return "\nOrder:\nNumber - " + num + "\n\t" + customer.toString() + "\nDate - " + date + "\nTotal price in dollars - " + orderSum + "\n";
     }
 
 }

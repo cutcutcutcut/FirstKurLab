@@ -39,4 +39,13 @@ public class OrderModel implements Serializable {
     public void clear() {
         runtime.clear();
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        for (Order c: runtime) {
+            result += c.toString();
+        }
+        return result;
+    }
 }
