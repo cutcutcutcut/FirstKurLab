@@ -44,4 +44,8 @@ public class CustomerModel implements Serializable {
         }
         return result;
     }
+
+    public boolean isEmpty() {
+        return runtime.size() <= 0;
+    }
 }

@@ -48,4 +48,9 @@ public class OrderModel implements Serializable {
         }
         return result;
     }
+
+
+    public boolean isEmpty() {
+        return runtime.size() <= 0;
+    }
 }

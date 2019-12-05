@@ -21,7 +21,7 @@ public class Main implements Serializable {
                 Order order = new Order(1,customer, calendar, 40000);
 
             Customer customer2 = new Customer("Telegram", "(495)654321", "Moscow, Not found information, -", 2);
-            Calendar calendar2 = new GregorianCalendar(2019, Calendar.DECEMBER, 5);
+            Calendar calendar2 = new GregorianCalendar(2013, Calendar.AUGUST, 14);
             Order order2 = new Order(2,customer2, calendar2, 55000);
 
             Customer customer3 = new Customer("Instagram", "4375885", "New York, st. Wanamakers, 12 ", 3);

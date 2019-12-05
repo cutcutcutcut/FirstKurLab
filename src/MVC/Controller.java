@@ -73,14 +73,27 @@ public class Controller {
                     return false;
                 }
                 case "show": {
-                    view.outInfo(fileView.getOrderList().toString());
-                    view.outInfo("");
-                    view.outInfo(fileView.getCustomerList().toString());
+                    if (fileView.getOrderList().isEmpty() && fileView.getCustomerList().isEmpty()) {
+                        view.outInfo("Directory is empty.");
+                        break;
+                    }
+
+                    if (!fileView.getOrderList().isEmpty()) {
+                        view.outInfo(fileView.getOrderList().toString());
+                    } else
+                        view.outInfo("There're not any Orders in the data base.");
+
+                    if (!fileView.getCustomerList().isEmpty()) {
+                        view.outInfo(fileView.getCustomerList().toString());
+                    } else
+                        view.outInfo("There're not any Customers in the data base.");
+
                     break;
                 }
                 case "clear": {
                     fileView.getCustomerList().clear();
                     fileView.getOrderList().clear();
+                    view.outInfo("Info successfully cleared from the directory.");
                     break;
                 }
                 case "getOrder": {
