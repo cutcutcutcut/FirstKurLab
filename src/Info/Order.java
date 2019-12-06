@@ -1,8 +1,10 @@
 package Info;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -19,6 +21,8 @@ public class Order implements Serializable {
     private Calendar date;
     private Customer customer;
     private UUID idOrder;
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy", Locale.ENGLISH);
     /**
      * Constructor that takes all field and create object
      *
@@ -120,6 +124,7 @@ public class Order implements Serializable {
         this.num = num;
     }
 
+
     /**
      * Method realizes the conversion object in string
      *
@@ -127,7 +132,7 @@ public class Order implements Serializable {
      */
     @Override
     public String toString() {
-        return "\nOrder:\nNumber - " + num + "\n\t" + customer.toString() + "\nDate - " + date + "\nTotal price in dollars - " + orderSum + "\n";
+        return "\n\nNumber - " + num + "\n\tCostumer:\n" + customer.toString() + "\nDate - " + dateFormat.format(date.getTime()) + "\nTotal price in dollars - " + orderSum + "\n";
     }
 
 }

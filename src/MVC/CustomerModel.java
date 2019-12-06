@@ -13,7 +13,7 @@ public class CustomerModel implements Serializable {
     public CustomerModel() {}
 
     public CustomerModel(FileView fileView) {
-        runtime = fileView.getCustomerList();
+        runtime = fileView.getCustomerList().getRuntime();
     }
 
     public List<Customer> getRuntime() {
@@ -23,6 +23,8 @@ public class CustomerModel implements Serializable {
     public void add(Customer forAdd) {
         runtime.add(forAdd);
     }
+
+    public Customer get(int index) { return runtime.get(index); }
 
     public void set(Customer forChange, int index) {
         runtime.set(index, forChange);
@@ -38,9 +40,10 @@ public class CustomerModel implements Serializable {
 
     @Override
     public String toString() {
-        String result = "";
+        String result = "Costumers:\n";
         for (Customer c: runtime) {
             result += c.toString();
+            result+="\n";
         }
         return result;
     }

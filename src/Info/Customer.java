@@ -104,7 +104,7 @@ public class Customer implements Serializable {
      */
     @Override
     public String toString() {
-        return "Orderer:\n\tName - " + name + "\n\tAddress - " + address + "\n\tPhone number - " + phoneNumber;
+        return "\tName - " + name + "\n\tAddress - " + address + "\n\tPhone number - " + phoneNumber + "\n";
     }
 
 }

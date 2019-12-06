@@ -2,14 +2,16 @@ package SaveService;
 
 import Info.Customer;
 import Info.Order;
+import MVC.CustomerModel;
+import MVC.OrderModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileView implements Serializable {
-    private List<Customer> customerList = new ArrayList<Customer>();
-    private List<Order> orderList = new ArrayList<Order>();
+    private CustomerModel customerList = new CustomerModel();
+    private OrderModel orderList = new OrderModel();
 
     public FileView() {}
 
@@ -18,24 +20,24 @@ public class FileView implements Serializable {
         this.orderList = fileView.getOrderList();
     }
 
-    public FileView(List<Customer> customerList, List<Order> orderList) {
+    public FileView(CustomerModel customerList, OrderModel orderList) {
         this.customerList = customerList;
         this.orderList = orderList;
     }
 
-    public List<Customer> getCustomerList() {
+    public CustomerModel getCustomerList() {
         return customerList;
     }
 
-    public void setCustomerList(List<Customer> customerList) {
+    public void setCustomerList(CustomerModel customerList) {
         this.customerList = customerList;
     }
 
-    public List<Order> getOrderList() {
+    public OrderModel getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(OrderModel orderList) {
         this.orderList = orderList;
     }
 }

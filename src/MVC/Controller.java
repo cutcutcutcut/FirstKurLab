@@ -1,5 +1,7 @@
 package MVC;
 
+import Info.Customer;
+import Info.Order;
 import SaveService.FileView;
 import SaveService.SavingAndDownload;
 
@@ -7,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * @author Alexey B
@@ -37,22 +41,21 @@ public class Controller {
 
     private void getCommandList() {
         view.outInfo("\nCommands:\n");
-        view.outInfo(commands.getOrder + " - returns Order information from directory by id");
-        view.outInfo(commands.getCustomer + " - returns Customer information from directory by id");
+        view.outInfo(commands.getOrder + " - returns Order information from directory by id");         //+
+        view.outInfo(commands.getCustomer + " - returns Customer information from directory by id");   //+
         view.outInfo(commands.setOrder + " - change an object of Order from directory by id");
         view.outInfo(commands.setCustomer + " - change an object of Costumer from directory by id");
-        view.outInfo(commands.addOrder + " - add an object of Order in directory");
-        view.outInfo(commands.addCostumer + " - add an object of Costumer in directory");
-        view.outInfo(commands.deleteOrder + " - delete an Order object from directory by id");
-        view.outInfo(commands.deleteCustomer + " - delete an Customer object from directory by id");
-        view.outInfo(commands.clear + " - delete all elements from directory"); //+
-        view.outInfo(commands.show + " - display contents of the directory"); //+
-        view.outInfo(commands.exit + " - End current session");  //+
-
+        view.outInfo(commands.addOrder + " - add an object of Order in directory");                     //+
+        view.outInfo(commands.addCostumer + " - add an object of Costumer in directory");               //+
+        view.outInfo(commands.deleteOrder + " - delete an Order object from directory by id");          //+
+        view.outInfo(commands.deleteCustomer + " - delete an Customer object from directory by id");    //+
+        view.outInfo(commands.clear + " - delete all elements from directory");                         //+
+        view.outInfo(commands.show + " - display contents of the directory");                           //+
+        view.outInfo(commands.exit + " - End current session and save information in data base\n");     //+
     }
 
 
-   public void start() throws IOException {
+     public void start() throws IOException {
         view.outInfo("Sales department : ");
         view.outInfo("Order(number, costumer, date, cost), Costumer(name, phone number, address)");
         getCommandList();
@@ -76,18 +79,19 @@ public class Controller {
                     if (fileView.getOrderList().isEmpty() && fileView.getCustomerList().isEmpty()) {
                         view.outInfo("Directory is empty.");
                         break;
+                    } else {
+
+                        if (!fileView.getOrderList().isEmpty()) {
+                            view.outInfo(fileView.getOrderList().toString());
+                        } else
+                            view.outInfo("There're not any Orders in the data base.");
+
+                        if (!fileView.getCustomerList().isEmpty()) {
+                            view.outInfo(fileView.getCustomerList().toString());
+                        } else
+                            view.outInfo("There're not any Customers in the data base.");
+                        view.outInfo("All elements is showed.");
                     }
-
-                    if (!fileView.getOrderList().isEmpty()) {
-                        view.outInfo(fileView.getOrderList().toString());
-                    } else
-                        view.outInfo("There're not any Orders in the data base.");
-
-                    if (!fileView.getCustomerList().isEmpty()) {
-                        view.outInfo(fileView.getCustomerList().toString());
-                    } else
-                        view.outInfo("There're not any Customers in the data base.");
-
                     break;
                 }
                 case "clear": {
@@ -102,6 +106,7 @@ public class Controller {
                 }
                 case "deleteOrder": {
                     deleteOrderInfo(in);
+                    view.outInfo("Info successfully deleted.");
                     break;
                 }
                 case "getCustomer": {
@@ -110,6 +115,22 @@ public class Controller {
                 }
                 case "deleteCustomer": {
                     deleteCustomerInfo(in);
+                    view.outInfo("Info successfully deleted.");
+                    break;
+                }
+                case "addCustomer": {
+                    addCustomer(in);
+                    view.outInfo("Info successfully added");
+                    break;
+                }
+                case "addOrder": {
+                    addOrder(in);
+                    view.outInfo("Info successfully added");
+                    break;
+                }
+                case "setOrder": {
+                }
+                case "setCostumer": {
                     break;
                 }
 
@@ -131,7 +152,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            view.viewer(fileView.getOrderList().get(index-1)); //needs id
+            view.orderViewer(fileView.getOrderList().get(index)); //needs id
         }
     }
 
@@ -172,8 +193,103 @@ public class Controller {
         }
     }
 
-    private void addOrder(Reader in) throws IOException {
 
+    private void addCustomer(Reader in) throws IOException {
+        String name, address, phoneNumber;
+        int numOrder;
+        StreamTokenizer input = new StreamTokenizer(in);
+        input.nextToken();
+
+        if(input.sval != null) {
+            name = input.sval;
+        }
+        else {
+            name = Double.toString(input.nval);
+        }
+        input.nextToken();
+
+        if(input.sval != null) {
+            address = input.sval;
+        }
+        else {
+            address = Double.toString(input.nval);
+        }
+        input.nextToken();
+
+
+        if(input.sval != null) {
+            phoneNumber = input.sval;
+        }
+        else {
+            phoneNumber = Integer.toString((int)input.nval);
+        }
+        input.nextToken();
+
+        numOrder = (int) input.nval;
+
+        try {
+            fileView.getCustomerList().add(new Customer(name, phoneNumber, address, numOrder));
+        } catch (IllegalArgumentException e) {
+            view.outInfo(e.getMessage());
+        }
+    }
+
+
+    private void addOrder(Reader in) throws IOException {
+        int num;
+        double orderSum;
+        int year, month, day;
+        String name, address, phoneNumber;
+
+        StreamTokenizer input = new StreamTokenizer(in);
+        input.nextToken();
+        num = (int) input.nval;
+        if (fileView.getOrderList().numCheck(num)) {
+            view.outInfo("Incorrect order number.");
+        }
+        else {
+            input.nextToken();
+
+            orderSum = input.nval;
+
+            input.nextToken();
+            year = (int) input.nval;
+
+            input.nextToken();
+            month = (int) input.nval;
+
+            input.nextToken();
+            day = (int) input.nval;
+
+            input.nextToken();
+
+            if (input.sval != null) {
+                name = input.sval;
+            } else {
+                name = Double.toString(input.nval);
+            }
+            input.nextToken();
+
+            if (input.sval != null) {
+                address = input.sval;
+            } else {
+                address = Double.toString(input.nval);
+            }
+            input.nextToken();
+
+
+            if (input.sval != null) {
+                phoneNumber = input.sval;
+            } else {
+                phoneNumber = Integer.toString((int) input.nval);
+            }
+
+            try {
+                fileView.getOrderList().add(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum));
+            } catch (IllegalArgumentException e) {
+                view.outInfo(e.getMessage());
+            }
+        }
     }
 
 

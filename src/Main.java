@@ -16,15 +16,15 @@ public class Main implements Serializable {
     public static void main(String[] args) {
         View view = new View();
         try {
-                Customer customer = new Customer("Vk", "(495)123456", "Saint-Peterburg, st. Nevkaya, 28", 1);
+                Customer customer = new Customer("Vk", "(495)123456", "Saint-Peterburg", 1);
                 Calendar calendar = new GregorianCalendar(2006, Calendar.OCTOBER, 1);
                 Order order = new Order(1,customer, calendar, 40000);
 
-            Customer customer2 = new Customer("Telegram", "(495)654321", "Moscow, Not found information, -", 2);
+            Customer customer2 = new Customer("Telegram", "(495)654321", "Moscow", 2);
             Calendar calendar2 = new GregorianCalendar(2013, Calendar.AUGUST, 14);
             Order order2 = new Order(2,customer2, calendar2, 55000);
 
-            Customer customer3 = new Customer("Instagram", "4375885", "New York, st. Wanamakers, 12 ", 3);
+            Customer customer3 = new Customer("Instagram", "4375885", "New York", 3);
             Calendar calendar3 = new GregorianCalendar(2006, Calendar.OCTOBER, 6);
             Order order3 = new Order(3,customer3, calendar3, 65000);
 
@@ -38,8 +38,8 @@ public class Main implements Serializable {
             customerModel.add(customer3);
 
             FileView fileView = new FileView();
-            fileView.setOrderList(orderModel.getRuntime());
-            fileView.setCustomerList(customerModel.getRuntime());
+            fileView.setOrderList(orderModel);
+            fileView.setCustomerList(customerModel);
             SavingAndDownload.save(fileView);
 
                 Controller controller = new Controller();
