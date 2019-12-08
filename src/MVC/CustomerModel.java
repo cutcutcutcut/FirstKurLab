@@ -24,13 +24,18 @@ public class CustomerModel implements Serializable {
         runtime.add(forAdd);
     }
 
-    public Customer get(int index) { return runtime.get(index); }
+    public Customer get(int index) {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
+        return runtime.get(index);
+    }
 
     public void set(Customer forChange, int index) {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
         runtime.set(index, forChange);
     }
 
     public void remove(int index) {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
         runtime.remove(index);
     }
 

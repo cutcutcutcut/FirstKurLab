@@ -1,9 +1,6 @@
 import Info.Customer;
 import Info.Order;
-import MVC.Controller;
-import MVC.CustomerModel;
-import MVC.OrderModel;
-import MVC.View;
+import MVC.*;
 import SaveService.FileView;
 import SaveService.SavingAndDownload;
 
@@ -48,6 +45,9 @@ public class Main implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             view.outInfo("Incorrect data base!");
             e.printStackTrace();
+        }
+        catch (BadInputExсeption e1) {
+            view.outInfo("Incorrect input");
         }
     }
 }

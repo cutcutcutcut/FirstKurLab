@@ -28,13 +28,18 @@ public class OrderModel implements Serializable {
         runtime.add(forAdd);
     }
 
-    public Order get(int index) { return runtime.get(index);}
+    public Order get(int index) {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
+        return runtime.get(index);
+    }
 
-    public void set(Order forChange, int index) {
+    public void set(Order forChange, int index)  {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
         runtime.set(index, forChange);
     }
 
     public void remove(int index) {
+        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
         runtime.remove(index);
     }
 
