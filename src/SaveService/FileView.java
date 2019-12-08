@@ -1,13 +1,9 @@
 package SaveService;
 
-import Info.Customer;
-import Info.Order;
 import MVC.CustomerModel;
 import MVC.OrderModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileView implements Serializable {
     private CustomerModel customerList = new CustomerModel();
