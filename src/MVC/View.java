@@ -23,6 +23,8 @@ public class View {
     private OrderModel orderModel;
     private CustomerModel customerModel;
 
+    public View() {}
+
     public View(OrderModel orderModel, CustomerModel customerModel) {
         this.orderModel = orderModel;
         this.customerModel = customerModel;
@@ -48,7 +50,7 @@ public class View {
         int num = 0;
         for(Order order : orderModel.getRuntime())
         {
-            System.out.println("Number order = " + num++ + order);
+            System.out.println("" + num++ + ")" +  order);
             orderNumToId.put(num, order.getIdOrder());
         }
 
@@ -58,7 +60,7 @@ public class View {
         int num = 0;
         for (Customer customer: customerModel.getRuntime())
         {
-            System.out.println("Number customer = " + num++ + "\n" + customer);
+            System.out.println("" + num++ + ")" +  customer);
             customerNumToId.put(num, customer.getIdCustomer());
         }
     }

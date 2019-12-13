@@ -112,7 +112,6 @@ public class Controller implements Serializable {
                 }
                 case "deleteOrder": {
                     deleteOrderInfo(in);
-                    view.outInfo("Info successfully deleted.");
                     break;
                 }
                 case "getCustomer": {
@@ -121,27 +120,22 @@ public class Controller implements Serializable {
                 }
                 case "deleteCustomer": {
                     deleteCustomerInfo(in);
-                    view.outInfo("Info successfully deleted.");
                     break;
                 }
                 case "addCustomer": {
                     addCustomer(in);
-                    view.outInfo("Info successfully added");
                     break;
                 }
                 case "addOrder": {
                     addOrder(in);
-                    view.outInfo("Info successfully added");
                     break;
                 }
                 case "setOrder": {
                     setOrder(in);
-                    view.outInfo("Info successfully updated.");
                     break;
                 }
                 case "setCustomer": {
                     setCustomer(in);
-                    view.outInfo("Info successfully updated.");
                     break;
                 }
 
@@ -161,9 +155,12 @@ public class Controller implements Serializable {
         if (tokenizer.sval != null) {
             view.outInfo("Incorrect input");
         }
+        else if ((int)tokenizer.nval < 0 || (int) tokenizer.nval >= view.getCustomerMapSize()) {
+            view.outInfo("Incorrect number.");
+        }
         else {
             int index = (int) tokenizer.nval;
-            view.outInfo(orderModel.get(view.getOrderId(index)).toString()); //needs id
+            view.outInfo(orderModel.get(view.getOrderId(index)).toString());
         }
     }
 
@@ -172,6 +169,9 @@ public class Controller implements Serializable {
         tokenizer.nextToken();
         if (tokenizer.sval != null) {
             view.outInfo("Incorrect input");
+        }
+        else if ((int)tokenizer.nval < 0 || (int) tokenizer.nval >= view.getCustomerMapSize()) {
+            view.outInfo("Incorrect number.");
         }
         else {
             int index = (int) tokenizer.nval;
@@ -185,9 +185,19 @@ public class Controller implements Serializable {
         if (tokenizer.sval != null) {
             view.outInfo("Incorrect input");
         }
+        else if ((int)tokenizer.nval < 0 || (int) tokenizer.nval >= view.getOrderMapSize()) {
+            view.outInfo("Incorrect number.");
+        }
         else {
             int index = (int) tokenizer.nval;
-            orderModel.remove(view.getOrderId(index)); //needs id
+            int num = orderModel.getNumById(view.getOrderId(index));
+            orderModel.remove(view.getOrderId(index));
+            for (int i = 0 ; i < customerModel.getRuntime().size(); i++) {
+                if (customerModel.getRuntime().get(i).getNumOrder() == num) {
+                    customerModel.remove(view.getCustomerId(i+1));
+                }
+            }
+            view.outInfo("Order(and linked costumers) info successfully deleted.");
         }
     }
 
@@ -198,9 +208,20 @@ public class Controller implements Serializable {
         if (tokenizer.sval != null) {
             view.outInfo("Incorrect input");
         }
+        else if ((int)tokenizer.nval < 0 || (int) tokenizer.nval >= view.getCustomerMapSize()) {
+            view.outInfo("Incorrect number.");
+        }
         else {
             int index = (int) tokenizer.nval;
+            index++;
+            int num = customerModel.getNumById(view.getCustomerId(index));
             customerModel.remove(view.getCustomerId(index));
+            for (int i = 0 ; i < orderModel.getRuntime().size(); i++) {
+                if (orderModel.getRuntime().get(i).getNum() == num) {
+                    orderModel.remove(view.getOrderId(i+1));
+                }
+            }
+            view.outInfo("Customer(and linked orders) info successfully deleted.");
         }
     }
 
@@ -211,20 +232,10 @@ public class Controller implements Serializable {
         StreamTokenizer input = new StreamTokenizer(in);
         input.nextToken();
 
-        if(input.sval != null) {
             name = input.sval;
-        }
-        else {
-            name = Double.toString(input.nval);
-        }
         input.nextToken();
 
-        if(input.sval != null) {
             address = input.sval;
-        }
-        else {
-            address = Double.toString(input.nval);
-        }
         input.nextToken();
 
 
@@ -240,6 +251,8 @@ public class Controller implements Serializable {
 
         try {
             customerModel.add(new Customer(name, phoneNumber, address, numOrder));
+            view.outInfo("Info successfully added");
+
         } catch (IllegalArgumentException e) {
             view.outInfo(e.getMessage());
         }
@@ -255,37 +268,28 @@ public class Controller implements Serializable {
         StreamTokenizer input = new StreamTokenizer(in);
         input.nextToken();
         num = (int) input.nval;
-        if (num < 0 || num >= view.getOrderMapSize()) {
+        if (num < 0 || orderModel.numCheck(num)) {
             view.outInfo("Incorrect order number.");
         }
         else {
             input.nextToken();
 
             orderSum = input.nval;
-
             input.nextToken();
+
             year = (int) input.nval;
-
             input.nextToken();
+
             month = (int) input.nval;
-
             input.nextToken();
+
             day = (int) input.nval;
-
             input.nextToken();
 
-            if (input.sval != null) {
-                name = input.sval;
-            } else {
-                name = Double.toString(input.nval);
-            }
+            name = input.sval;
             input.nextToken();
 
-            if (input.sval != null) {
                 address = input.sval;
-            } else {
-                address = Double.toString(input.nval);
-            }
             input.nextToken();
 
 
@@ -297,6 +301,8 @@ public class Controller implements Serializable {
 
             try {
                 orderModel.add(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum));
+                view.outInfo("Info successfully added");
+
             } catch (IllegalArgumentException e) {
                 view.outInfo(e.getMessage());
             }
@@ -336,13 +342,14 @@ public class Controller implements Serializable {
             phoneNumber = Integer.toString((int)input.nval);
         }
         input.nextToken();
-
         numOrder = (int) input.nval;
 
         try {
-            customerModel.set(new Customer(name, phoneNumber, address, numOrder), view.getCustomerId(position));
+            customerModel.set(new Customer(name, phoneNumber, address, numOrder), view.getCustomerId(position+1));
+            view.outInfo("Info successfully updated.");
+
         } catch (IllegalArgumentException e) {
-            view.outInfo(e.getMessage());
+            view.outInfo("Incorrect input. Try again..");
         }
 
     }
@@ -396,9 +403,10 @@ public class Controller implements Serializable {
             }
 
             try {
-                orderModel.set(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum), view.getOrderId(position));
+                orderModel.set(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum), view.getOrderId(position+1));
+                view.outInfo("Info successfully updated.");
             } catch (IllegalArgumentException | BadInputExсeption e) {
-                view.outInfo(e.getMessage());
+                view.outInfo("Incorrect input. Try again..");
             }
 
     }

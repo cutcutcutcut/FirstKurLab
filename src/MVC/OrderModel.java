@@ -29,7 +29,7 @@ public class OrderModel implements Serializable {
         runtime.add(forAdd);
     }
 
-    private int searchById(UUID id) {
+    public int searchById(UUID id) {
         for (int i = 0 ; i < runtime.size(); i++) {
             if (runtime.get(i).getIdOrder() == id)  {
                 return i;
@@ -67,4 +67,14 @@ public class OrderModel implements Serializable {
         return runtime.size() <= 0;
     }
 
+    public int getNumById(UUID id) {
+        return runtime.get(this.searchById(id)).getNum();
+    }
+
+    public boolean numCheck(int num) {
+        for (int i = 0; i < runtime.size(); i++) {
+            if (runtime.get(i).getNum() == num) return true;
+        }
+        return false;
+    }
 }

@@ -63,4 +63,15 @@ public class CustomerModel implements Serializable {
     public boolean isEmpty() {
         return runtime.size() <= 0;
     }
+
+    public int getNumById(UUID id) {
+        return runtime.get(searchById(id)).getNumOrder();
+    }
+
+    public boolean numCheck(int num) {
+        for (int i = 0; i < runtime.size(); i++) {
+            if (runtime.get(i).getNumOrder() == num) return true;
+        }
+        return false;
+    }
 }
