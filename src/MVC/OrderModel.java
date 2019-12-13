@@ -7,6 +7,7 @@ import SaveService.FileView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderModel implements Serializable {
 
@@ -19,7 +20,7 @@ public class OrderModel implements Serializable {
     public OrderModel() {}
 
     public OrderModel(FileView fileView) {
-        runtime = fileView.getOrderList().getRuntime();
+        runtime = fileView.getOrderList();
     }
 
     //
@@ -28,19 +29,24 @@ public class OrderModel implements Serializable {
         runtime.add(forAdd);
     }
 
-    public Order get(int index) {
-        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
-        return runtime.get(index);
+    private int searchById(UUID id) {
+        for (int i = 0 ; i < runtime.size(); i++) {
+            if (runtime.get(i).getIdOrder() == id)  {
+                return i;
+            }
+        }
+        return 0;
+    }
+    public Order get(UUID id) {
+        return runtime.get(this.searchById(id));
     }
 
-    public void set(Order forChange, int index)  {
-        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
-        runtime.set(index, forChange);
+    public void set(Order forChange, UUID id)  {
+        runtime.set(this.searchById(id), forChange);
     }
 
-    public void remove(int index) {
-        if (index < 0 || index > runtime.size()) throw new BadInputExсeption("Incorrect index");
-        runtime.remove(index);
+    public void remove(UUID id) {
+        runtime.remove(this.searchById(id));
     }
 
     public void clear() {
@@ -61,12 +67,4 @@ public class OrderModel implements Serializable {
         return runtime.size() <= 0;
     }
 
-
-    public boolean numCheck(int num) {
-        boolean result = false;
-        for (int i = 0; i < runtime.size(); i++) {
-            if (runtime.get(i).getNum() == num) result = true;
-        }
-        return result;
-    }
 }

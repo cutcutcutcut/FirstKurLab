@@ -11,7 +11,6 @@ import java.util.GregorianCalendar;
 
 public class Main implements Serializable {
     public static void main(String[] args) {
-        View view = new View();
         try {
                 Customer customer = new Customer("Vk", "(495)123456", "Saint-Peterburg", 1);
                 Calendar calendar = new GregorianCalendar(2006, Calendar.OCTOBER, 1);
@@ -33,21 +32,20 @@ public class Main implements Serializable {
             customerModel.add(customer);
             customerModel.add(customer2);
             customerModel.add(customer3);
+            SavingAndDownload storageService = new SavingAndDownload();
+            View view = new View(orderModel, customerModel);
+            FileView fileView = new FileView(customerModel.getRuntime(), orderModel.getRuntime());
+            fileView.setOrderList(orderModel.getRuntime());
+            fileView.setCustomerList(customerModel.getRuntime());
+            storageService.save(fileView);
 
-            FileView fileView = new FileView();
-            fileView.setOrderList(orderModel);
-            fileView.setCustomerList(customerModel);
-            SavingAndDownload.save(fileView);
-
-                Controller controller = new Controller();
+                Controller controller = new Controller(storageService,view);
                 controller.start();
-
         } catch (IOException | ClassNotFoundException e) {
-            view.outInfo("Incorrect data base!");
             e.printStackTrace();
         }
         catch (BadInputExсeption e1) {
-            view.outInfo("Incorrect input");
+            e1.getMessage();
         }
     }
 }

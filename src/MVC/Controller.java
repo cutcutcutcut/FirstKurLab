@@ -5,10 +5,7 @@ import Info.Order;
 import SaveService.FileView;
 import SaveService.SavingAndDownload;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StreamTokenizer;
+import java.io.*;
 import java.util.GregorianCalendar;
 
 /**
@@ -18,12 +15,20 @@ import java.util.GregorianCalendar;
  * This class is a part of MVC, that realize interaction between user and program
  *
  */
-public class Controller {
+public class Controller implements Serializable {
 
-   private FileView fileView = new FileView(SavingAndDownload.download());
-   private View view = new View();
+   private FileView fileView;
+    private SavingAndDownload storageService;
+    private View view;
+    private OrderModel orderModel;
+    private CustomerModel customerModel;
 
-    public Controller() throws IOException, ClassNotFoundException {
+    public Controller(SavingAndDownload storageService, View view) throws IOException, ClassNotFoundException {
+        this.storageService = storageService;
+        this.fileView = storageService.download();
+        this.view = view;
+        orderModel = new OrderModel(fileView);
+        customerModel = new CustomerModel(fileView);
     }
 
     private enum commands {
@@ -70,23 +75,25 @@ public class Controller {
         if (currentCommand != null) {
             switch (currentCommand) {
                 case "exit": {
-                    SavingAndDownload.save(fileView);
+                    fileView.setOrderList(orderModel.getRuntime());
+                    fileView.setCustomerList(customerModel.getRuntime());
+                    storageService.save(fileView);
                     view.outInfo("Program successfully completed.");
                     return false;
                 }
                 case "show": {
-                    if (fileView.getOrderList().isEmpty() && fileView.getCustomerList().isEmpty()) {
+                    if (orderModel.isEmpty() && customerModel.isEmpty()) {
                         view.outInfo("Directory is empty.");
                         break;
                     } else {
 
-                        if (!fileView.getOrderList().isEmpty()) {
-                            view.outInfo(fileView.getOrderList().toString());
+                        if (!orderModel.isEmpty()) {
+                            view.orderViewer();
                         } else
                             view.outInfo("There're not any Orders in the data base.");
 
-                        if (!fileView.getCustomerList().isEmpty()) {
-                            view.outInfo(fileView.getCustomerList().toString());
+                        if (!customerModel.isEmpty()) {
+                            view.customerViewer();
                         } else
                             view.outInfo("There're not any Customers in the data base.");
                         view.outInfo("All elements is showed.");
@@ -94,8 +101,8 @@ public class Controller {
                     break;
                 }
                 case "clear": {
-                    fileView.getCustomerList().clear();
-                    fileView.getOrderList().clear();
+                    orderModel.clear();
+                    customerModel.clear();
                     view.outInfo("Info successfully cleared from the directory.");
                     break;
                 }
@@ -156,7 +163,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            view.orderViewer(fileView.getOrderList().get(index-1)); //needs id
+            view.outInfo(orderModel.get(view.getOrderId(index)).toString()); //needs id
         }
     }
 
@@ -168,7 +175,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            view.customerViewer(fileView.getCustomerList().get(index-1)); //needs id
+            view.outInfo(customerModel.get(view.getCustomerId(index)).toString());
         }
     }
 
@@ -180,7 +187,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            fileView.getOrderList().remove(index-1); //needs id
+            orderModel.remove(view.getOrderId(index)); //needs id
         }
     }
 
@@ -193,7 +200,7 @@ public class Controller {
         }
         else {
             int index = (int) tokenizer.nval;
-            fileView.getCustomerList().remove(index-1); //needs id
+            customerModel.remove(view.getCustomerId(index));
         }
     }
 
@@ -232,7 +239,7 @@ public class Controller {
         numOrder = (int) input.nval;
 
         try {
-            fileView.getCustomerList().add(new Customer(name, phoneNumber, address, numOrder));
+            customerModel.add(new Customer(name, phoneNumber, address, numOrder));
         } catch (IllegalArgumentException e) {
             view.outInfo(e.getMessage());
         }
@@ -248,7 +255,7 @@ public class Controller {
         StreamTokenizer input = new StreamTokenizer(in);
         input.nextToken();
         num = (int) input.nval;
-        if (fileView.getOrderList().numCheck(num)) {
+        if (num < 0 || num >= view.getOrderMapSize()) {
             view.outInfo("Incorrect order number.");
         }
         else {
@@ -289,7 +296,7 @@ public class Controller {
             }
 
             try {
-                fileView.getOrderList().add(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum));
+                orderModel.add(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum));
             } catch (IllegalArgumentException e) {
                 view.outInfo(e.getMessage());
             }
@@ -333,7 +340,7 @@ public class Controller {
         numOrder = (int) input.nval;
 
         try {
-            fileView.getCustomerList().set(new Customer(name, phoneNumber, address, numOrder), position-1);
+            customerModel.set(new Customer(name, phoneNumber, address, numOrder), view.getCustomerId(position));
         } catch (IllegalArgumentException e) {
             view.outInfo(e.getMessage());
         }
@@ -389,7 +396,7 @@ public class Controller {
             }
 
             try {
-                fileView.getOrderList().set(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum), position-1);
+                orderModel.set(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum), view.getOrderId(position));
             } catch (IllegalArgumentException | BadInputExсeption e) {
                 view.outInfo(e.getMessage());
             }

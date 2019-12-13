@@ -4,6 +4,8 @@ import Info.Customer;
 import Info.Order;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Alexey B
@@ -15,20 +17,50 @@ import java.util.HashMap;
 
 public class View {
 
-//    private HashMap<Integer, Order> orderMap = new HashMap<>();
-//    private HashMap<Integer, Customer> customerMap = new HashMap<>();
-//    private int orderNum = 0, customerNum = 0;
 
-    public void orderViewer(Order order) {
-//        orderMap.put(orderNum, order);
-//        orderNum++;
-        System.out.println(order.toString());
+    private Map<Integer, UUID> orderNumToId = new HashMap<>();
+    private Map<Integer, UUID> customerNumToId = new HashMap<>();
+    private OrderModel orderModel;
+    private CustomerModel customerModel;
+
+    public View(OrderModel orderModel, CustomerModel customerModel) {
+        this.orderModel = orderModel;
+        this.customerModel = customerModel;
     }
 
-    public void customerViewer(Customer customer) {
-//        customerMap.put(customerNum, customer);
-//        customerNum++;
-        System.out.println(customer.toString());
+    public int getOrderMapSize() {
+        return orderNumToId.size();
+    }
+
+    public int getCustomerMapSize() {
+        return customerNumToId.size();
+    }
+
+    public UUID getOrderId(int num) {
+        return orderNumToId.get(num);
+    }
+
+    public UUID getCustomerId(int num) {
+        return customerNumToId.get(num);
+    }
+
+    public void orderViewer() {
+        int num = 0;
+        for(Order order : orderModel.getRuntime())
+        {
+            System.out.println("Number order = " + num++ + order);
+            orderNumToId.put(num, order.getIdOrder());
+        }
+
+    }
+
+    public void customerViewer() {
+        int num = 0;
+        for (Customer customer: customerModel.getRuntime())
+        {
+            System.out.println("Number customer = " + num++ + "\n" + customer);
+            customerNumToId.put(num, customer.getIdCustomer());
+        }
     }
 
     public void outInfo(String message) {
