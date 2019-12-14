@@ -10,19 +10,27 @@ import java.util.GregorianCalendar;
 
 /**
  * @author Alexey B
- * @version 1.0
+ * @version 1.4.2
  *
  * This class is a part of MVC, that realize interaction between user and program
  *
  */
+
 public class Controller implements Serializable {
 
-   private FileView fileView;
+    private FileView fileView;
     private SavingAndDownload storageService;
     private View view;
     private OrderModel orderModel;
     private CustomerModel customerModel;
 
+    /**
+     * Constructor creates object of the Controller class to takes users command
+     * @param storageService object of SavingAndDownload class for download and save values in database
+     * @param view object of View class for output
+     * @throws IOException exception class for output/input
+     * @throws ClassNotFoundException exception class for class causes
+     */
     public Controller(SavingAndDownload storageService, View view) throws IOException, ClassNotFoundException {
         this.storageService = storageService;
         this.fileView = storageService.download();
@@ -31,6 +39,10 @@ public class Controller implements Serializable {
         customerModel = new CustomerModel(fileView);
     }
 
+    /**
+     * the container of commands names for user
+     * contains constructor for link string to each element
+     */
     private enum commands {
 
         getOrder("getOrderInfo"), getCustomer("getCustomerInfo"), setOrder("setOrder"), setCustomer("setCustomer"),addOrder("addOrder"),
@@ -43,6 +55,9 @@ public class Controller implements Serializable {
 
     }
 
+    /**
+     * Method output list of commands and their description
+     */
     private void getCommandList() {
         view.outInfo("\nCommands:\n");
         view.outInfo(commands.getOrder + " - returns Order information from directory");                //+
@@ -58,7 +73,11 @@ public class Controller implements Serializable {
         view.outInfo(commands.exit + " - End current session and save information in data base\n");     //+
     }
 
-
+    /**
+     * Enter to the program
+     * using method for output commands and method for users command until EXIT
+     * @throws IOException exception class for output/input
+     */
      public void start() throws IOException {
         view.outInfo("Sales department : ");
         view.outInfo("Order(number, customer, date, cost), Customer(name, phone number, address)");
@@ -68,6 +87,12 @@ public class Controller implements Serializable {
 
     }
 
+    /**
+     * Method realize input commands by user
+     * @param in object of Reader class
+     * @return boolean
+     * @throws IOException exception class for output/input
+     */
     private boolean inputCommand(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
@@ -149,6 +174,12 @@ public class Controller implements Serializable {
         return true;
     }
 
+    /**
+     * Method for getOrder command
+     * getting Customer object by id, which searches by index
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void getOrderInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
@@ -164,6 +195,12 @@ public class Controller implements Serializable {
         }
     }
 
+    /**
+     * Method for getCustomer command
+     * getting Customer object by id, which searches by index from user
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void getCustomerInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
@@ -179,6 +216,12 @@ public class Controller implements Serializable {
         }
     }
 
+    /**
+     * Method for deleteOrder command
+     * delete Customer info by id that search by index from user
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void deleteOrderInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
@@ -201,7 +244,12 @@ public class Controller implements Serializable {
         }
     }
 
-
+    /**
+     * Method for deleteCustomer command
+     * delete Customer info by id that search by index from user
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void deleteCustomerInfo(Reader in) throws IOException {
         StreamTokenizer tokenizer = new StreamTokenizer(in);
         tokenizer.nextToken();
@@ -225,7 +273,12 @@ public class Controller implements Serializable {
         }
     }
 
-
+    /**
+     * Method for addCustomer command
+     * add new Object of Customer class in CustomerModel
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void addCustomer(Reader in) throws IOException {
         String name, address, phoneNumber;
         int numOrder;
@@ -258,7 +311,12 @@ public class Controller implements Serializable {
         }
     }
 
-
+    /**
+     * Method for addOrder command
+     * add new Object of Order class in OrderModel
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void addOrder(Reader in) throws IOException {
         int num;
         double orderSum;
@@ -309,6 +367,12 @@ public class Controller implements Serializable {
         }
     }
 
+    /**
+     * Method for setCustomer command
+     * takes new parameters from user and change Customer object by id that search by index from user
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void setCustomer(Reader in) throws IOException {
         String name, address, phoneNumber;
         int numOrder, position;
@@ -354,6 +418,13 @@ public class Controller implements Serializable {
 
     }
 
+
+    /**
+     * Method for setOrder command
+     * takes new parameters from user and change Order(and linked Customer) object by id that search by index from user
+     * @param in object of Reader class
+     * @throws IOException exception class for output/input
+     */
     private void setOrder(Reader in) throws IOException {
         int num, position;
         double orderSum;
@@ -404,6 +475,7 @@ public class Controller implements Serializable {
 
             try {
                 orderModel.set(new Order(num, new Customer(name, phoneNumber, address, num), new GregorianCalendar(year, month, day), orderSum), view.getOrderId(position+1));
+                customerModel.set(new Customer(name, phoneNumber, address, num), view.getCustomerId(customerModel.getIndexByNum(num)+1));
                 view.outInfo("Info successfully updated.");
             } catch (IllegalArgumentException | BadInputExсeption e) {
                 view.outInfo("Incorrect input. Try again..");

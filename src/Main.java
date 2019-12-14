@@ -38,6 +38,11 @@ public class Main implements Serializable {
             fileView.setOrderList(orderModel.getRuntime());
             fileView.setCustomerList(customerModel.getRuntime());
             storageService.save(fileView);
+//
+//           OrderModel orderModel = new OrderModel();
+//           CustomerModel customerModel = new CustomerModel();
+//           SavingAndDownload storageService = new SavingAndDownload();
+//           View view = new View(orderModel, customerModel);
                 Controller controller = new Controller(storageService,view);
                 controller.start();
         } catch (IOException | ClassNotFoundException e) {

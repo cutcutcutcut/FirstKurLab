@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * @author Alexey B
- * @version 1.0
+ * @version 1.4.2
  *
  * This is one of the info classes, that contains information about order
  *
@@ -22,13 +22,13 @@ public class Order implements Serializable {
     private UUID idOrder;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy", Locale.ENGLISH);
+
     /**
      * Constructor that takes all field and create object
-     *
-     * @param num
-     * @param customer
-     * @param date
-     * @param orderSum
+     * @param num order number
+     * @param customer customer
+     * @param date the day month and year of order
+     * @param orderSum cost
      */
 
     public Order(int num, Customer customer, Calendar date, double orderSum) {
@@ -39,6 +39,10 @@ public class Order implements Serializable {
         this.orderSum = orderSum;
     }
 
+    /**
+     * getter for id field of Order object
+     * @return uuid
+     */
     public UUID getIdOrder() {
         return idOrder;
     }
@@ -74,9 +78,9 @@ public class Order implements Serializable {
     }
 
     /**
-     * Setter for field orderer
+     * Setter for field customer
      *
-     * @param customer orderer
+     * @param customer customer
      */
 
     public void setCustomer(Customer customer) {
