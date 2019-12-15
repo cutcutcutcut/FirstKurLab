@@ -3,7 +3,7 @@ package MVC;
 import Info.Customer;
 import SaveService.FileView;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -58,8 +58,12 @@ public class CustomerModel implements Serializable {
      * Method takes Customer object and use list method to add
      * @param forAdd Customer object
      */
-    public void add(Customer forAdd) {
-        runtime.add(forAdd);
+    public String add(Customer forAdd) {
+        if (!this.toString().contains(forAdd.toString())) {
+            runtime.add(forAdd);
+            return "Customer info successfully added.";
+        }
+        return "Such Customer is already existing";
     }
 
     /**
@@ -138,6 +142,40 @@ public class CustomerModel implements Serializable {
             if (num == runtime.get(i).getNumOrder()) return i;
         }
         return -1;
+    }
+
+    /**
+     * Method for searching all information by user template
+     * @param template some string, number etc
+     * @return String for out
+     */
+    public String templateSearch(String template) {
+        String result = "Customers were find:\n";
+        for (int i = 0; i < runtime.size(); i++) {
+            if (runtime.get(i).toString().contains(template)) result += runtime.get(i).toString() + "\n";
+        }
+        if (result.equals("Customers were find:\n")) return "There is not any order by this template";
+        return result;
+    }
+
+    /**
+     * Method adds Order object from file
+     * @param file file to add
+     * @return String to out
+     * @throws IOException exception class for input
+     */
+    public String fileAdding(File file) throws IOException {
+        ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
+        try {
+            FileView tempFileView = (FileView) input.readObject();
+            List<Customer> tempList = tempFileView.getCustomerList();
+            for (Customer customer : tempList) {
+                this.add(customer);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            return "Customers added.";
+        }
+        return "Customers added.";
     }
 
 }

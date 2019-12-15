@@ -46,7 +46,8 @@ public class Controller implements Serializable {
     private enum commands {
 
         getOrder("getOrderInfo"), getCustomer("getCustomerInfo"), setOrder("setOrder"), setCustomer("setCustomer"),addOrder("addOrder"),
-        addCustomer("addCustomer"), deleteOrder("deleteOrder"), deleteCustomer("deleteCustomer"), clear("clear"), show("show"), exit("exit");
+        addCustomer("addCustomer"), deleteOrder("deleteOrder"), deleteCustomer("deleteCustomer"), clear("clear"), show("show"), exit("exit"),
+        search("search"), addFromFile("addFromFile");
 
         private String title;
         commands(String title) {
@@ -70,7 +71,9 @@ public class Controller implements Serializable {
         view.outInfo(commands.deleteCustomer + " - delete an Customer object from directory");          //+
         view.outInfo(commands.clear + " - delete all elements from directory");                         //+
         view.outInfo(commands.show + " - display contents of the directory");                           //+
-        view.outInfo(commands.exit + " - End current session and save information in data base\n");     //+
+        view.outInfo(commands.exit + " - End current session and save information in data base");       //+
+        view.outInfo(commands.search + " - Search all information by entered template");                //+
+        view.outInfo(commands.addFromFile + " - Add information from file by name\n");
     }
 
     /**
@@ -78,7 +81,7 @@ public class Controller implements Serializable {
      * using method for output commands and method for users command until EXIT
      * @throws IOException exception class for output/input
      */
-     public void start() throws IOException {
+     public void start() throws IOException, ClassNotFoundException {
         view.outInfo("Sales department : ");
         view.outInfo("Order(number, customer, date, cost), Customer(name, phone number, address)");
         getCommandList();
@@ -161,6 +164,14 @@ public class Controller implements Serializable {
                 }
                 case "setCustomer": {
                     setCustomer(in);
+                    break;
+                }
+                case "search": {
+                    templateSearch(in);
+                    break;
+                }
+                case "addFromFile": {
+                      fileAdding(in);
                     break;
                 }
 
@@ -481,6 +492,43 @@ public class Controller implements Serializable {
                 view.outInfo("Incorrect input. Try again..");
             }
 
+    }
+
+    /**
+     * Method for searching information by template
+     * @param in object Reader class
+     * @throws IOException exception class for input
+     */
+    private void templateSearch(Reader in) throws IOException {
+        StreamTokenizer input = new StreamTokenizer(in);
+        input.nextToken();
+        String template = input.sval;
+
+        if (input.sval == null) {
+            template = Integer.toString((int) input.nval);
+        }
+
+        view.outInfo("" + orderModel.templateSearch(template) + "\n" +  customerModel.templateSearch(template));
+    }
+
+    /**
+     * Method for adding Order and Customers objects from file by name
+     * @param in object Reader class
+     * @throws IOException exception class for input
+     */
+    private void fileAdding(Reader in) throws IOException {
+        StreamTokenizer input = new StreamTokenizer(in);
+        input.nextToken();
+        String name = input.sval;
+        if (input.sval == null) {
+              name = Integer.toString((int) input.nval);
+           }
+        File file = new File("C://Users//bekht//Desktop", name);
+        if (file.length() == 0) view.outInfo("File is empty or does not exist.");
+        else {
+            view.outInfo(orderModel.fileAdding(file));
+            view.outInfo(customerModel.fileAdding(file));
+        }
     }
 
 }
