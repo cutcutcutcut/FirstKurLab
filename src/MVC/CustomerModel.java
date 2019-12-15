@@ -56,6 +56,7 @@ public class CustomerModel implements Serializable {
 
     /**
      * Method takes Customer object and use list method to add
+     * @return string to out
      * @param forAdd Customer object
      */
     public String add(Customer forAdd) {
